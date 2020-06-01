@@ -33,13 +33,22 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
-# create: POST /notes
 functions:
+  # create: POST /notes
   create:
     handler: create.main
     events:
       - http:
           path: notes
           method: post
+          cors: true
+          authorizer: aws_iam
+  # GET /notes/{id}
+  get:
+    handler: get.main
+    events:
+      - http:
+          path: notes/{id}
+          method: get
           cors: true
           authorizer: aws_iam
