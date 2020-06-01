@@ -1,0 +1,8 @@
+{
+  "body": "{\"content\":\"rembember to turn off the oven\",\"attachment\":\"oven.jpg\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-ANDREI-1234"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+# NOTE: update this with your service name
+service: sls-notes-app-api
+
+# Create an optimized package for our functions 
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle # Package our functions with Webpack
+  - serverless-offline
+  - serverless-dotenv-plugin # Load .env as environment variables
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: prod
+  region: us-east-1
+
+  environment:
+    TABLE_NAME: notes
+
+  # Define permission policies for the Lambda function
+  # Allow access to dynamodb tables from the us-east-1 region
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+# create: POST /notes
+functions:
+  create:
+    handler: create.main
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
+          authorizer: aws_iam
