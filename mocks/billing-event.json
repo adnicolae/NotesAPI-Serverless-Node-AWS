@@ -1,0 +1,8 @@
+{
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-ANDREI-1234"
+    }
+  },
+  "body": "{\"source\":\"tok_visa_debit\",\"storagePreference\":15}"
+}
