@@ -52,11 +52,21 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  # GET /notes
   list:
     handler: list.main
     events:
       - http:
           path: notes
           method: get
+          cors: true
+          authorizer: aws_iam
+  # PUT /notes/{id}
+  update:
+    handler: update.main
+    events:
+      - http:
+          path: notes/{id}
+          method: put
           cors: true
           authorizer: aws_iam

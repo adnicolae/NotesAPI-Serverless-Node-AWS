@@ -1,0 +1,11 @@
+{
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-ANDREI-1234"
+    }
+  },
+  "pathParameters": {
+    "id": "fc1a3570-a426-11ea-8434-554d4f50e899"
+  },
+  "body": "{\"content\":\"Good start to a day\",\"attachment\":\"happyface.jpg\"}"
+}
