@@ -13,7 +13,7 @@ export const main = handler(async (evt, ctx) => {
     description,
     currency: 'usd'
   };
-  
+
   const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 
   await stripe.charges.create(body);
