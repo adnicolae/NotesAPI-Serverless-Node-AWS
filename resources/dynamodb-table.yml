@@ -1,0 +1,19 @@
+# https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html
+Resources:
+  NotesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      # Get table name from serverless.yml
+      TableName: ${self:custom.tableName} 
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: noteId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH  # partition key
+        - AttributeName: noteId
+          KeyType: RANGE # sort-key
+      # Set the capacity to auto-scale
+      BillingMode: PAY_PER_REQUEST

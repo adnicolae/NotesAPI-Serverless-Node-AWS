@@ -1,5 +1,5 @@
 # NOTE: update this with your service name
-service: sls-notes-app-api
+service: sls-notes-app-2-api
 
 # Create an optimized package for our functions 
 package:
@@ -10,14 +10,20 @@ plugins:
   - serverless-offline
   - serverless-dotenv-plugin # Load .env as environment variables
 
+custom:
+  # stage setting passed through cli cmd, default: provider section
+  stage: ${opt:stage, self:provider.stage}
+  # separate tables for dev and prod environments
+  tableName: ${self:custom.stage}-notes
+
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: prod
+  stage: dev
   region: us-east-1
 
   environment:
-    TABLE_NAME: notes
+    TABLE_NAME: ${self:custom.tableName}
     STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY}
 
   # Define permission policies for the Lambda function
@@ -32,7 +38,9 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      # Restrict IAM role permissions to specific table for the stage
+      Resource:
+        - "Fn::GettAtt": [ NotesTable, Arn ]
 
 functions:
   # create: POST /notes
@@ -91,4 +99,7 @@ functions:
           authorizer: aws_iam
 
 resources:
+  # API Gateway Errors
   - ${file(resources/api-gateway-errors.yml)}
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
